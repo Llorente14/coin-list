@@ -1,0 +1,263 @@
+.gradientWrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0d1117 0%, #1a1f2e 50%, #0d1117 100%);
+  color: var(--text-primary);
+  padding: 2rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.gradientWrapper::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(139, 92, 246, 0.1) 0%,
+    transparent 70%
+  );
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.contentWrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.characterContainer {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.maintenanceCharacter {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  filter: drop-shadow(0 10px 30px rgba(139, 92, 246, 0.3));
+}
+
+/* Animations */
+.helmet {
+  animation: bob 3s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.body {
+  animation: bodySway 4s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes bodySway {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-2deg);
+  }
+  75% {
+    transform: rotate(2deg);
+  }
+}
+
+.leftArm {
+  animation: leftArmSwing 2s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+@keyframes leftArmSwing {
+  0%,
+  100% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+}
+
+.rightArm {
+  animation: rightArmSwing 2.5s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+@keyframes rightArmSwing {
+  0%,
+  100% {
+    transform: rotate(10deg);
+  }
+  50% {
+    transform: rotate(-10deg);
+  }
+}
+
+.wrench {
+  animation: wrenchRotate 3s ease-in-out infinite;
+  transform-origin: 284px 200px;
+}
+
+@keyframes wrenchRotate {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(15deg);
+  }
+}
+
+.flashlight {
+  animation: flashlightMove 2s ease-in-out infinite;
+}
+
+@keyframes flashlightMove {
+  0%,
+  100% {
+    transform: translateX(0) rotate(-5deg);
+  }
+  50% {
+    transform: translateX(5px) rotate(5deg);
+  }
+}
+
+.lightBeam {
+  animation: lightPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes lightPulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scaleX(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scaleX(1.2);
+  }
+}
+
+.leftLeg {
+  animation: leftLegWalk 1.5s ease-in-out infinite;
+}
+
+@keyframes leftLegWalk {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-3px) rotate(2deg);
+  }
+}
+
+.rightLeg {
+  animation: rightLegWalk 1.5s ease-in-out infinite;
+  animation-delay: 0.75s;
+}
+
+@keyframes rightLegWalk {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-3px) rotate(-2deg);
+  }
+}
+
+.errorSign {
+  animation: signShake 0.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes signShake {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-3deg);
+  }
+  75% {
+    transform: rotate(3deg);
+  }
+}
+
+.particle1 {
+  animation: float1 3s ease-in-out infinite;
+}
+
+.particle2 {
+  animation: float2 4s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.particle3 {
+  animation: float3 3.5s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+@keyframes float1 {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(10px, -15px);
+    opacity: 1;
+  }
+}
+
+@keyframes float2 {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(-15px, 10px);
+    opacity: 1;
+  }
+}
+
+@keyframes float3 {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(12px, 12px);
+    opacity: 1;
+  }
+}
+

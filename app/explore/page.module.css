@@ -1,0 +1,12 @@
+.gradientWrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0d1117 0%, #1a1f2e 50%, #0d1117 100%);
+  color: var(--text-primary);
+  padding: 2rem 0;
+}
+
+.contentWrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
