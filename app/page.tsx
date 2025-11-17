@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { Container, Button, Navbar, Nav } from "react-bootstrap";
-import { FaCoins, FaArrowRight, FaList, FaPlus, FaEye, FaSearch } from "react-icons/fa";
+import {
+  FaCoins,
+  FaArrowRight,
+  FaList,
+  FaPlus,
+  FaEye,
+  FaSearch,
+} from "react-icons/fa";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -22,7 +29,7 @@ export default function Home() {
         <Container>
           <Navbar.Brand className="d-flex align-items-center gap-2 text-white fw-bold">
             <FaCoins className="text-primary" style={{ fontSize: "1.5rem" }} />
-            <span>535240143 - Axel Chrisdy</span>
+            <span className="text-white">535240143 - Axel Chrisdy</span>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
