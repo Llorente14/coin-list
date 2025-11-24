@@ -1,20 +1,5 @@
 // File: lib/prisma.ts
+// Export read-only Prisma client sebagai default
+// Untuk operasi write, gunakan prisma-writable.ts
 
-import { PrismaClient } from "@prisma/client";
-
-// Deklarasikan 'prisma' pada objek global NodeJS
-declare global {
-  var prisma: PrismaClient | undefined;
-}
-
-// Cek jika 'prisma' sudah ada di global, jika tidak, buat baru.
-// Ini mencegah pembuatan instance PrismaClient baru setiap kali
-// ada hot-reload di Next.js (mode development).
-const client = globalThis.prisma || new PrismaClient({
-  adapter: process.env.DATABASE_URL,
-});
-if (process.env.NODE_ENV !== "production") {
-  globalThis.prisma = client;
-}
-
-export default client;
+export { default } from "./prisma-readonly";

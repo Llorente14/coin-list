@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
-// GET - Get all wishlist items
+// GET - Get all wishlist items (Read-only)
 export async function GET() {
   try {
     const items = await prisma.wishlistItem.findMany({
@@ -13,40 +13,11 @@ export async function GET() {
   } catch (error) {
     console.error("Error fetching wishlist items:", error);
     return NextResponse.json(
-      { error: `ailed to fetch wishlist item: ${error}` },
+      { error: `Failed to fetch wishlist items: ${error}` },
       { status: 500 }
     );
   }
 }
 
-// POST - Create a new wishlist item
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json();
-    const { name, symbol, price, description } = body;
-
-    if (!name || !symbol || !price) {
-      return NextResponse.json(
-        { error: "Name, symbol, and price are required" },
-        { status: 400 }
-      );
-    }
-
-    const item = await prisma.wishlistItem.create({
-      data: {
-        name,
-        symbol: symbol.toUpperCase(),
-        price,
-        description: description || "Tidak ada deskripsi",
-      },
-    });
-
-    return NextResponse.json(item, { status: 201 });
-  } catch (error) {
-    console.error("Error creating wishlist item:", error);
-    return NextResponse.json(
-      { error: "Failed to create wishlist item" },
-      { status: 500 }
-    );
-  }
-}
+// POST, PUT, DELETE operations are disabled - Database is read-only
+// Use /api/seed endpoint to populate the database
