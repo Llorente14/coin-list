@@ -9,24 +9,33 @@ import prismaWritable from "@/lib/prisma-writable";
 export async function POST(request: NextRequest) {
   try {
     // Cek apakah ini production atau ada secret key
+    // Di development, izinkan tanpa auth. Di production, butuh secret key
     const authHeader = request.headers.get("authorization");
     const secretKey = process.env.SEED_SECRET_KEY || "default-secret-key-change-in-production";
-    const isAuthorized = 
-      process.env.NODE_ENV === "production" || 
+    const isDevelopment = process.env.NODE_ENV !== "production";
+    const hasValidAuth = 
       authHeader === `Bearer ${secretKey}` ||
       request.headers.get("x-seed-key") === secretKey;
+    
+    const isAuthorized = isDevelopment || hasValidAuth;
 
     if (!isAuthorized) {
       return NextResponse.json(
-        { error: "Unauthorized. Seeding is only allowed in production or with valid secret key." },
+        { error: "Unauthorized. In production, seeding requires a valid secret key via Authorization header or x-seed-key header." },
         { status: 403 }
       );
     }
 
-    // Hapus semua data existing
-    await prismaWritable.wishlistItem.deleteMany();
+    // Cek query parameter untuk menentukan apakah harus clear data atau tambah saja
+    const { searchParams } = new URL(request.url);
+    const clearData = searchParams.get('clear') === 'true';
 
-    // Seed data
+    if (clearData) {
+      // Hapus semua data existing jika parameter clear=true
+      await prismaWritable.wishlistItem.deleteMany();
+    }
+
+    // Seed data - tambahkan 5 data baru
     const seedData = [
       {
         name: "Bitcoin",
@@ -58,19 +67,52 @@ export async function POST(request: NextRequest) {
         price: "100",
         description: "High-performance blockchain for decentralized apps",
       },
+      {
+        name: "Polkadot",
+        symbol: "DOT",
+        price: "7.5",
+        description: "Interoperable blockchain network connecting multiple chains",
+      },
+      {
+        name: "Chainlink",
+        symbol: "LINK",
+        price: "15",
+        description: "Decentralized oracle network for smart contracts",
+      },
+      {
+        name: "Polygon",
+        symbol: "MATIC",
+        price: "0.8",
+        description: "Ethereum scaling solution with faster transactions",
+      },
     ];
 
     const createdItems = [];
     for (const data of seedData) {
-      const item = await prismaWritable.wishlistItem.create({
-        data,
+      // Cek apakah data sudah ada berdasarkan symbol (untuk menghindari duplikasi)
+      const existing = await prismaWritable.wishlistItem.findFirst({
+        where: { symbol: data.symbol },
       });
-      createdItems.push(item);
+      
+      if (!existing) {
+        const item = await prismaWritable.wishlistItem.create({
+          data,
+        });
+        createdItems.push(item);
+      } else {
+        // Skip jika sudah ada
+        createdItems.push({ ...existing, skipped: true });
+      }
     }
 
+    const newItems = createdItems.filter(item => !item.skipped);
+    const skippedItems = createdItems.filter(item => item.skipped);
+    
     return NextResponse.json(
       { 
-        message: `Successfully seeded ${createdItems.length} wishlist items`,
+        message: `Successfully processed ${createdItems.length} items: ${newItems.length} new, ${skippedItems.length} skipped (already exist)`,
+        newItems: newItems.length,
+        skippedItems: skippedItems.length,
         items: createdItems 
       },
       { status: 200 }

@@ -83,6 +83,24 @@ async function main() {
       price: "100",
       description: "High-performance blockchain for decentralized apps",
     },
+    {
+      name: "Polkadot",
+      symbol: "DOT",
+      price: "7.5",
+      description: "Interoperable blockchain network connecting multiple chains",
+    },
+    {
+      name: "Chainlink",
+      symbol: "LINK",
+      price: "15",
+      description: "Decentralized oracle network for smart contracts",
+    },
+    {
+      name: "Polygon",
+      symbol: "MATIC",
+      price: "0.8",
+      description: "Ethereum scaling solution with faster transactions",
+    },
   ];
 
   // Insert data
