@@ -2,10 +2,20 @@
 // Seed file untuk mengisi database dengan data awal
 
 import { PrismaClient } from "@prisma/client";
+import path from 'path';
 
-const prisma = new PrismaClient({
-  datasourceUrl: process.env.DATABASE_URL,
-});
+// Workaround to find the db file in production
+const filePath = path.join(process.cwd(), 'prisma/local.db');
+
+const config = {
+  datasources: {
+    db: {
+      url: 'file:' + filePath,
+    },
+  },
+};
+
+const prisma = new PrismaClient(config);
 
 async function main() {
   console.log("🌱 Starting seed...");

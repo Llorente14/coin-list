@@ -2,22 +2,35 @@
 // Prisma client untuk operasi write (hanya untuk seeding)
 
 import { PrismaClient } from "@prisma/client";
+import path from 'path';
 
 // Deklarasikan 'prisma' pada objek global NodeJS
 declare global {
-  var prismaWritable: PrismaClient | undefined;
+  // eslint-disable-next-line no-var
+  var cachedPrismaWritable: PrismaClient;
 }
 
-// Cek jika 'prisma' sudah ada di global, jika tidak, buat baru.
-// Ini mencegah pembuatan instance PrismaClient baru setiap kali
-// ada hot-reload di Next.js (mode development).
-const client = globalThis.prismaWritable || new PrismaClient({
-  datasourceUrl: process.env.DATABASE_URL,
-});
+// Workaround to find the db file in production
+const filePath = path.join(process.cwd(), 'prisma/local.db');
 
-if (process.env.NODE_ENV !== "production") {
-  globalThis.prismaWritable = client;
+const config = {
+  datasources: {
+    db: {
+      url: 'file:' + filePath,
+    },
+  },
+};
+
+let prisma: PrismaClient;
+
+if (process.env.NODE_ENV === 'production') {
+  prisma = new PrismaClient(config);
+} else {
+  if (!global.cachedPrismaWritable) {
+    global.cachedPrismaWritable = new PrismaClient(config);
+  }
+  prisma = global.cachedPrismaWritable;
 }
 
-export default client;
+export default prisma;
 
