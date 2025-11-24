@@ -10,7 +10,9 @@ declare global {
 // Cek jika 'prisma' sudah ada di global, jika tidak, buat baru.
 // Ini mencegah pembuatan instance PrismaClient baru setiap kali
 // ada hot-reload di Next.js (mode development).
-const client = globalThis.prisma || new PrismaClient();
+const client = globalThis.prisma || new PrismaClient({
+  adapter: process.env.DATABASE_URL,
+});
 if (process.env.NODE_ENV !== "production") {
   globalThis.prisma = client;
 }

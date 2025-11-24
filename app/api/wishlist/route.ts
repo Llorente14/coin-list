@@ -13,7 +13,7 @@ export async function GET() {
   } catch (error) {
     console.error("Error fetching wishlist items:", error);
     return NextResponse.json(
-      { error: "Failed to fetch wishlist items" },
+      { error: `ailed to fetch wishlist item: ${error}` },
       { status: 500 }
     );
   }
